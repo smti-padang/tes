@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Pemilihan Ketua OSIS — SMK SMTI Padang</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;min-height:100vh}
+.page{display:none}.page.active{display:block}
+.topbar{background:linear-gradient(135deg,#0d2b5e 0%,#1a4a8a 100%);padding:12px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:20}
+.topbar-logo{width:40px;height:40px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10px;color:#0d2b5e;flex-shrink:0}
+.topbar-text{flex:1}.topbar-text h1{color:white;font-size:14px;font-weight:600}.topbar-text p{color:rgba(255,255,255,0.7);font-size:11px}
+.topbar-btn{background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);padding:6px 12px;border-radius:20px;font-size:12px;cursor:pointer}
+.topbar-btn:hover{background:rgba(255,255,255,0.25)}
+.login-outer{display:flex;flex-direction:column;align-items:center;padding:28px 16px}
+.card{background:white;border:1px solid #e2e8f0;border-radius:12px;padding:22px;width:100%;max-width:400px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.fg{margin-bottom:13px}.fg label{display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.04em}
+.fg input,.fg textarea{width:100%;padding:9px 12px;font-size:14px;border:1px solid #cbd5e1;border-radius:8px;background:white;color:#1e293b;font-family:inherit}
+.fg input:focus,.fg textarea:focus{outline:none;border-color:#0d2b5e}
+.btn-blue{width:100%;padding:11px;background:#0d2b5e;color:white;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;margin-top:4px;font-family:inherit}
+.btn-blue:hover{background:#0a2452}.btn-blue:disabled{opacity:0.45;cursor:not-allowed}
+.btn-outline{width:100%;padding:9px;background:transparent;color:#0d2b5e;border:1px solid #0d2b5e;border-radius:8px;font-size:13px;cursor:pointer;margin-top:8px;font-family:inherit}
+.btn-outline:hover{background:#f0f4ff}
+.alert{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px}
+.alert-err{background:#ffeaea;color:#a32d2d;border:1px solid #f09595}
+.alert-ok{background:#eaf3de;color:#3b6d11;border:1px solid #97c459}
+/* VOTE */
+.vote-wrap{padding:16px;max-width:720px;margin:0 auto}
+.voter-info-bar{background:white;border:1px solid #e2e8f0;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.voter-avatar{width:38px;height:38px;border-radius:50%;background:#0d2b5e;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px;flex-shrink:0}
+.warn-box{background:#fffbe6;border:1px solid #fac775;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:13px;color:#634106}
+.sec-label{font-size:11px;font-weight:700;letter-spacing:0.08em;color:#64748b;text-transform:uppercase;margin-bottom:12px}
+.paslon-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:16px}
+.paslon-card{background:white;border:2.5px solid #e2e8f0;border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color 0.15s,box-shadow 0.15s}
+.paslon-card:hover{border-color:#1a4a8a;box-shadow:0 4px 12px rgba(13,43,94,0.1)}
+.paslon-card.selected{border-color:#0d2b5e;background:#f0f5ff}
+.paslon-header{padding:9px 14px;display:flex;align-items:center;gap:10px}
+.paslon-nomor{background:white;font-weight:800;font-size:14px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.paslon-header-title{color:white;font-size:13px;font-weight:600;letter-spacing:0.02em}
+.paslon-body{padding:16px;display:flex;gap:14px;align-items:flex-start}
+.paslon-photos{display:flex;gap:10px;flex-shrink:0}
+.photo-wrap{text-align:center}
+.photo-circle{width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid #e0e8f5;background:#e8eef8;display:block}
+.photo-placeholder{width:72px;height:72px;border-radius:50%;background:#e8eef8;display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid #e0e8f5}
+.photo-role{font-size:10px;color:#64748b;margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+.paslon-info{flex:1;min-width:0}
+.paslon-name-item{font-size:14px;font-weight:700;color:#1e293b;margin-bottom:2px}
+.paslon-name-item span{font-size:11px;color:#64748b;font-weight:400}
+.paslon-visi{font-size:12px;color:#475569;font-style:italic;line-height:1.6;margin:8px 0 6px;padding:8px;background:#f8fafc;border-radius:6px;border-left:3px solid #0d2b5e}
+.paslon-misi{font-size:12px;color:#64748b;line-height:1.7;white-space:pre-line}
+.check-indicator{display:none;align-items:center;justify-content:center;gap:6px;color:white;padding:7px 16px;border-radius:20px;font-size:12px;margin-top:10px;font-weight:600}
+.paslon-card.selected .check-indicator{display:flex}
+.btn-submit{width:100%;padding:13px;background:#0d2b5e;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-submit:disabled{opacity:0.4;cursor:not-allowed}
+.btn-submit:not(:disabled):hover{background:#0a2452}
+/* VOTED */
+.voted-wrap{display:flex;flex-direction:column;align-items:center;padding:36px 20px;text-align:center}
+.voted-card{background:white;border:1px solid #e2e8f0;border-radius:12px;padding:20px 28px;margin:16px 0;width:100%;max-width:340px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+/* ADMIN */
+.admin-wrap{padding:14px;max-width:920px;margin:0 auto}
+.tab-bar{display:flex;border-bottom:2px solid #e2e8f0;margin-bottom:16px;overflow-x:auto;gap:0}
+.tab-btn{padding:10px 16px;font-size:13px;cursor:pointer;border:none;background:none;color:#64748b;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;font-family:inherit}
+.tab-btn.active{color:#0d2b5e;border-bottom-color:#0d2b5e;font-weight:600}
+.tab-content{display:none}.tab-content.active{display:block}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.stat-card{background:white;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.stat-val{font-size:28px;font-weight:700;color:#0d2b5e}.stat-lbl{font-size:11px;color:#64748b;margin-top:3px;font-weight:500}
+.bar-wrap{margin-bottom:14px}
+.bar-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;color:#1e293b}
+.bar-track{height:28px;background:#f1f5f9;border-radius:6px;overflow:hidden}
+.bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:10px;color:white;font-size:12px;font-weight:600;transition:width 0.6s ease}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;padding:10px;border-bottom:2px solid #e2e8f0;color:#64748b;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+.tbl td{padding:10px;border-bottom:1px solid #f1f5f9;color:#1e293b}
+.tbl tr:hover td{background:#f8faff}
+.badge{display:inline-block;padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700}
+.badge-y{background:#dcfce7;color:#166534}.badge-n{background:#f1f5f9;color:#64748b}
+.btn-sm{padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer;border:none;font-family:inherit;font-weight:500}
+.btn-del{background:#ffeaea;color:#a32d2d}.btn-del:hover{background:#fccaca}
+.paslon-edit-card{background:white;border:1px solid #e2e8f0;border-radius:12px;padding:18px;margin-bottom:16px}
+.paslon-edit-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f1f5f9}
+.paslon-edit-num{width:34px;height:34px;border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.photo-upload-circle{width:80px;height:80px;border-radius:50%;border:2px dashed #cbd5e1;display:flex;align-items:center;justify-content:center;font-size:26px;background:#f8fafc;overflow:hidden;cursor:pointer;transition:border-color 0.15s}
+.photo-upload-circle:hover{border-color:#0d2b5e;background:#f0f5ff}
+.photo-upload-circle img{width:100%;height:100%;object-fit:cover}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:white;border-radius:12px;padding:24px;width:92%;max-width:380px;box-shadow:0 8px 32px rgba(0,0,0,0.18)}
+.modal h3{font-size:16px;font-weight:700;margin-bottom:8px;color:#1e293b}
+.modal p{font-size:13px;color:#64748b;margin-bottom:18px;line-height:1.6}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end}
+.btn-cancel{padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;border:1px solid #cbd5e1;background:none;color:#1e293b;font-family:inherit}
+.btn-cancel:hover{background:#f8faff}
+.btn-confirm{padding:8px 18px;border-radius:8px;font-size:13px;cursor:pointer;border:none;background:#0d2b5e;color:white;font-family:inherit;font-weight:600}
+.btn-confirm:hover{background:#0a2452}
+@media(max-width:480px){.two-col{grid-template-columns:1fr}.paslon-body{flex-direction:column}.paslon-photos{justify-content:center}.stats-grid{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div id="app">
+
+<div id="page-login" class="page active">
+  <div class="topbar">
+    <div class="topbar-logo">SMTI</div>
+    <div class="topbar-text"><h1>Pemilihan Ketua OSIS</h1><p>SMK SMTI Padang — Tahun Ajaran 2025/2026</p></div>
+  </div>
+  <div class="login-outer">
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="width:72px;height:72px;background:#0d2b5e;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:30px">🗳️</div>
+      <h2 style="font-size:20px;font-weight:700;color:#1e293b">Masuk untuk Memilih</h2>
+      <p style="font-size:13px;color:#64748b;margin-top:6px">Gunakan akun yang telah didaftarkan oleh panitia</p>
+    </div>
+    <div class="card">
+      <div id="login-alert" class="alert alert-err" style="display:none"></div>
+      <div class="fg"><label>NISN / Username</label><input id="l-user" placeholder="Masukkan NISN Anda"/></div>
+      <div class="fg"><label>Password</label><input id="l-pass" type="password" placeholder="Masukkan password"/></div>
+      <button class="btn-blue" onclick="window.doLogin()" id="btn-login">Masuk →</button>
+      <button class="btn-outline" onclick="window.showPage('page-admin-login')">Login sebagai Admin</button>
+    </div>
+    <p style="font-size:12px;color:#94a3b8;margin-top:14px;text-align:center">Belum punya akun? Hubungi panitia OSIS</p>
+  </div>
+</div>
+
+<div id="page-admin-login" class="page">
+  <div class="topbar">
+    <div class="topbar-logo">ADM</div>
+    <div class="topbar-text"><h1>Login Admin</h1><p>SMK SMTI Padang</p></div>
+  </div>
+  <div class="login-outer">
+    <div class="card">
+      <h2 style="font-size:17px;font-weight:700;color:#1e293b;margin-bottom:4px">Panel Administrator</h2>
+      <p style="font-size:13px;color:#64748b;margin-bottom:18px">Kelola paslon, foto, akun siswa, dan hasil voting</p>
+      <div id="adm-alert" class="alert alert-err" style="display:none"></div>
+      <div class="fg"><label>Username</label><input id="a-user" placeholder="admin"/></div>
+      <div class="fg"><label>Password</label><input id="a-pass" type="password" placeholder="Password admin"/></div>
+      <button class="btn-blue" onclick="window.doAdminLogin()">Masuk sebagai Admin</button>
+      <button class="btn-outline" onclick="window.showPage('page-login')">← Kembali ke Login Siswa</button>
+    </div>
+  </div>
+</div>
+
+<div id="page-vote" class="page">
+  <div class="topbar">
+    <div class="topbar-logo">SMTI</div>
+    <div class="topbar-text"><h1>Pemilihan Ketua OSIS</h1><p>SMK SMTI Padang</p></div>
+    <div class="topbar-btn" onclick="window.doLogout()">Keluar</div>
+  </div>
+  <div class="vote-wrap">
+    <div class="voter-info-bar">
+      <div class="voter-avatar" id="v-initials">?</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:#1e293b" id="v-name">—</div>
+        <div style="font-size:12px;color:#64748b" id="v-class">—</div>
+      </div>
+    </div>
+    <div class="warn-box">⚠️ Pemilihan hanya bisa dilakukan <strong>satu kali</strong>. Pastikan pilihanmu sudah benar sebelum mengirim suara.</div>
+    <div class="sec-label">Pilih Pasangan Calon Ketua &amp; Wakil Ketua OSIS</div>
+    <div class="paslon-grid" id="paslon-grid"></div>
+    <button class="btn-submit" id="btn-vote" disabled onclick="window.openConfirm()">Pilih Pasangan Calon</button>
+  </div>
+</div>
+
+<div id="page-voted" class="page">
+  <div class="topbar">
+    <div class="topbar-logo">SMTI</div>
+    <div class="topbar-text"><h1>Pemilihan Ketua OSIS</h1><p>SMK SMTI Padang</p></div>
+    <div class="topbar-btn" onclick="window.doLogout()">Keluar</div>
+  </div>
+  <div class="voted-wrap">
+    <div style="font-size:58px;margin-bottom:14px">✅</div>
+    <h2 style="font-size:22px;font-weight:700;color:#1e293b;margin-bottom:8px">Suaramu Sudah Tercatat!</h2>
+    <p style="font-size:14px;color:#64748b;margin-bottom:4px">Terima kasih telah berpartisipasi dalam pemilihan Ketua OSIS SMK SMTI Padang</p>
+    <div class="voted-card">
+      <div id="voted-photos" style="display:flex;justify-content:center;gap:16px;margin-bottom:14px"></div>
+      <p style="font-size:12px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.05em">Kamu memilih Paslon</p>
+      <h3 id="voted-nomor" style="font-size:42px;font-weight:800;color:#0d2b5e;margin:4px 0"></h3>
+      <p id="voted-names" style="font-size:15px;font-weight:700;color:#1e293b;margin-top:4px"></p>
+      <p id="voted-time" style="font-size:11px;color:#94a3b8;margin-top:8px"></p>
+    </div>
+    <p style="font-size:13px;color:#64748b;max-width:320px;text-align:center;line-height:1.6">Hasil pemilihan akan diumumkan setelah periode voting selesai oleh panitia OSIS.</p>
+  </div>
+</div>
+
+<div id="page-admin" class="page">
+  <div class="topbar">
+    <div class="topbar-logo">ADM</div>
+    <div class="topbar-text"><h1>Panel Admin OSIS</h1><p>SMK SMTI Padang</p></div>
+    <div class="topbar-btn" onclick="window.doLogout()">Keluar</div>
+  </div>
+  <div class="admin-wrap">
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="window.switchTab('t-result',this)">📊 Hasil</button>
+      <button class="tab-btn" onclick="window.switchTab('t-paslon',this)">👥 Edit Paslon &amp; Foto</button>
+      <button class="tab-btn" onclick="window.switchTab('t-voters',this)">📋 Data Pemilih</button>
+      <button class="tab-btn" onclick="window.switchTab('t-akun',this)">🔑 Akun Siswa</button>
+      <button class="tab-btn" onclick="window.switchTab('t-setting',this)">⚙️ Pengaturan</button>
+    </div>
+    <div id="t-result" class="tab-content active">
+      <div class="stats-grid" id="adm-stats"></div>
+      <div class="sec-label">Perolehan Suara</div>
+      <div id="adm-bars"></div>
+    </div>
+    <div id="t-paslon" class="tab-content">
+      <p style="font-size:13px;color:#64748b;margin-bottom:16px">Edit nama, upload foto, visi dan misi setiap pasangan calon. Klik lingkaran foto untuk upload gambar dari perangkat.</p>
+      <div id="paslon-edit-area"></div>
+      <button class="btn-blue" style="max-width:220px" onclick="window.savePaslon()">💾 Simpan Semua Paslon</button>
+      <div id="paslon-save-alert" class="alert" style="display:none;margin-top:10px;max-width:420px"></div>
+    </div>
+    <div id="t-voters" class="tab-content">
+      <p style="font-size:13px;color:#64748b;margin-bottom:12px">Status pemilihan seluruh siswa yang terdaftar</p>
+      <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>#</th><th>Nama</th><th>Kelas</th><th>NISN</th><th>Status</th></tr></thead><tbody id="voters-tbody"></tbody></table></div>
+    </div>
+    <div id="t-akun" class="tab-content">
+      <div class="card" style="max-width:600px;margin-bottom:16px">
+        <h3 style="font-size:14px;font-weight:700;margin-bottom:12px;color:#1e293b">Tambah Akun Siswa</h3>
+        <div id="akun-alert" class="alert alert-err" style="display:none"></div>
+        <div class="two-col">
+          <div class="fg" style="margin:0"><label>Nama Lengkap</label><input id="an-name" placeholder="Nama lengkap"/></div>
+          <div class="fg" style="margin:0"><label>Kelas</label><input id="an-kelas" placeholder="XII KI 1"/></div>
+          <div class="fg" style="margin:0"><label>NISN (username login)</label><input id="an-nisn" placeholder="0051234xxx"/></div>
+          <div class="fg" style="margin:0"><label>Password</label><input id="an-pw" type="password" placeholder="Password awal"/></div>
+        </div>
+        <button class="btn-blue" style="margin-top:14px;width:auto;padding:9px 22px" onclick="window.addAkun()">+ Tambah Akun</button>
+      </div>
+      <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>#</th><th>Nama</th><th>Kelas</th><th>NISN</th><th>Aksi</th></tr></thead><tbody id="akun-tbody"></tbody></table></div>
+    </div>
+    <div id="t-setting" class="tab-content">
+      <div class="card" style="max-width:480px;margin-bottom:14px">
+        <h3 style="font-size:14px;font-weight:700;margin-bottom:8px;color:#1e293b">Reset Semua Suara</h3>
+        <p style="font-size:13px;color:#64748b;margin-bottom:12px">Hapus semua data voting. Akun siswa dan data paslon tetap tersimpan.</p>
+        <button class="btn-sm btn-del" onclick="document.getElementById('modal-reset').classList.add('open')">🗑️ Reset Data Voting</button>
+      </div>
+      <div class="card" style="max-width:480px">
+        <h3 style="font-size:14px;font-weight:700;margin-bottom:8px;color:#1e293b">Ganti Password Admin</h3>
+        <div id="pw-alert" class="alert" style="display:none"></div>
+        <div class="fg"><label>Password Baru</label><input id="new-pw" type="password" placeholder="Minimal 6 karakter"/></div>
+        <button class="btn-blue" style="width:auto;padding:9px 22px" onclick="window.changeAdminPw()">Simpan Password</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal">
+    <h3>Konfirmasi Pilihan</h3>
+    <p>Kamu akan memilih <strong id="modal-paslon-name"></strong>. Setelah dikirim, pilihanmu <strong>tidak bisa diubah</strong>.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="window.closeModal('modal-confirm')">Batal</button>
+      <button class="btn-confirm" onclick="window.submitVote()">✓ Ya, Kirim Suara</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-reset">
+  <div class="modal">
+    <h3>Reset Data Voting</h3>
+    <p>Semua data suara akan dihapus permanen. Tindakan ini <strong>tidak bisa diurungkan</strong>.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="window.closeModal('modal-reset')">Batal</button>
+      <button class="btn-confirm" style="background:#a32d2d" onclick="window.doReset()">Reset Sekarang</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+// IMPORT FIREBASE DARI CDN
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+// ======= ⚠️ GANTI KONFIGURASI INI DENGAN FIREBASE MILIKMU =======
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCEU5qh0VOJZXDPm9nFXjlQwFhsQrguQ14",
+  authDomain: "e-vote-11a75.firebaseapp.com",
+  projectId: "e-vote-11a75",
+  storageBucket: "e-vote-11a75.firebasestorage.app",
+  messagingSenderId: "919994282732",
+  appId: "1:919994282732:web:99057c929600d693d82bc9",
+  measurementId: "G-SDV9Y4KNMN"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app); 
+
+const DP=[
+  {id:1,ketua:"Rizky Pratama",ketua_kelas:"XI KI 2",ketua_photo:"",wakil:"Sari Indah Lestari",wakil_kelas:"XI TK 1",wakil_photo:"",visi:"Mewujudkan OSIS yang aktif, kreatif, dan berprestasi tinggi untuk SMK SMTI Padang",misi:"1. Meningkatkan kualitas kegiatan ekstrakurikuler\n2. Mempererat hubungan antar kelas dan angkatan\n3. Mendorong prestasi akademik dan non-akademik siswa",color:"#0d2b5e"},
+  {id:2,ketua:"Muhammad Fauzi",ketua_kelas:"XI KA 1",ketua_photo:"",wakil:"Nurul Hidayah",wakil_kelas:"XII KI 1",wakil_photo:"",visi:"SMTI Padang maju bersama — solid, inovatif, dan bersatu dalam satu visi",misi:"1. Memperkuat komunikasi antara OSIS dan seluruh siswa\n2. Program beasiswa dan penghargaan berprestasi\n3. Inovasi digital untuk mendukung kegiatan sekolah",color:"#1a6b3a"},
+  {id:3,ketua:"Dani Saputra",ketua_kelas:"XI TK 2",ketua_photo:"",wakil:"Fitri Handayani",wakil_kelas:"X KI 1",wakil_photo:"",visi:"Generasi SMTI berkarakter kuat, berbudaya luhur, dan berdaya saing tinggi",misi:"1. Mengembangkan budaya disiplin dan tanggung jawab\n2. Kegiatan sosial dan bakti lingkungan sekolah\n3. Membangun kolaborasi produktif dengan alumni SMTI",color:"#6b1a0d"}
+];
+const DV=[
+  {nisn:"0051234001",name:"Budi Santoso",kelas:"XII KI 1",pass:"budi123"},
+  {nisn:"0051234002",name:"Dewi Rahmawati",kelas:"XII KI 1",pass:"dewi123"},
+  {nisn:"0051234003",name:"Ahmad Firdaus",kelas:"XII TK 2",pass:"ahmad123"},
+  {nisn:"0051234004",name:"Maya Sari",kelas:"XII KA 2",pass:"maya123"},
+  {nisn:"0051234005",name:"Rendi Kurniawan",kelas:"XI KA 1",pass:"rendi123"},
+  {nisn:"0051234006",name:"Putri Anggraini",kelas:"X TK 1",pass:"putri123"},
+  {nisn:"0051234007",name:"Hendra Wijaya",kelas:"X KI 1",pass:"hendra123"},
+  {nisn:"0051234008",name:"Lina Marlina",kelas:"XI KI 2",pass:"lina123"}
+];
+
+const defaultData = { paslon: DP, voters: DV, votes: {}, adminPass: "admin123" };
+
+// FUNGSI FIREBASE (ASYNC)
+async function getDB(){
+  try {
+    const docSnap = await getDoc(docRef);
+    if(docSnap.exists()){
+      return docSnap.data();
+    } else {
+      await setDoc(docRef, defaultData);
+      return defaultData;
+    }
+  } catch(e) {
+    console.error("Gagal getDB:", e);
+    return defaultData;
+  }
+}
+
+async function saveDB(d){
+  try {
+    await setDoc(docRef, d);
+  } catch(e) {
+    console.error("Gagal saveDB:", e);
+  }
+}
+
+let CU=null,SP=null;
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function pEl(src,sz){return src&&src.length>10?`<img src="${src}" style="width:${sz}px;height:${sz}px;border-radius:50%;object-fit:cover;border:2px solid #e0e8f5"/>`:`<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:#e8eef8;display:flex;align-items:center;justify-content:center;font-size:${Math.round(sz*.36)}px;border:2px solid #e0e8f5">👤</div>`;}
+
+async function doLogin(){
+  const btn = document.getElementById('btn-login');
+  btn.textContent = "Loading..."; btn.disabled = true;
+  
+  const u=document.getElementById('l-user').value.trim(),p=document.getElementById('l-pass').value.trim(),al=document.getElementById('login-alert');al.style.display='none';
+  const db=await getDB();
+  const voter=db.voters.find(v=>v.nisn===u&&v.pass===p);
+  
+  btn.textContent = "Masuk →"; btn.disabled = false;
+
+  if(!voter){al.textContent='NISN atau password salah.';al.style.display='block';return;}
+  CU=voter;const voted=db.votes[voter.nisn];
+  if(voted){const pl=db.paslon.find(p=>p.id===voted.paslonId);renderVotedPage(pl,voted.time);showPage('page-voted');}
+  else{document.getElementById('v-name').textContent=voter.name;document.getElementById('v-class').textContent=voter.kelas+' — NISN: '+voter.nisn;document.getElementById('v-initials').textContent=voter.name.split(' ').map(w=>w[0]).slice(0,2).join('');renderPaslonCards(db.paslon);showPage('page-vote');}
+}
+
+async function doAdminLogin(){
+  const u=document.getElementById('a-user').value.trim(),p=document.getElementById('a-pass').value.trim(),al=document.getElementById('adm-alert');al.style.display='none';
+  const db=await getDB();
+  if(u==='admin'&&p===db.adminPass){CU={isAdmin:true}; await renderAdmin(); showPage('page-admin');}
+  else{al.textContent='Username atau password admin salah.';al.style.display='block';}
+}
+
+function doLogout(){CU=null;SP=null;document.getElementById('l-user').value='';document.getElementById('l-pass').value='';document.getElementById('login-alert').style.display='none';showPage('page-login');}
+
+function renderPaslonCards(paslons){
+  document.getElementById('paslon-grid').innerHTML=paslons.map(pl=>`
+    <div class="paslon-card" id="pc-${pl.id}" onclick="window.selectPaslon(${pl.id})">
+      <div class="paslon-header" style="background:${pl.color}"><div class="paslon-nomor" style="color:${pl.color}">${pl.id}</div><div class="paslon-header-title">Pasangan Calon Nomor ${pl.id}</div></div>
+      <div class="paslon-body">
+        <div class="paslon-photos">
+          <div class="photo-wrap">${pEl(pl.ketua_photo,72)}<div class="photo-role">Ketua</div></div>
+          <div class="photo-wrap">${pEl(pl.wakil_photo,72)}<div class="photo-role">Wakil</div></div>
+        </div>
+        <div class="paslon-info">
+          <div style="margin-bottom:8px"><div class="paslon-name-item">${pl.ketua} <span>(${pl.ketua_kelas})</span></div><div class="paslon-name-item">${pl.wakil} <span>(${pl.wakil_kelas})</span></div></div>
+          <div class="paslon-visi">"${pl.visi}"</div>
+          <div class="paslon-misi">${pl.misi}</div>
+          <div class="check-indicator" style="background:${pl.color}">✓ Dipilih</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+async function selectPaslon(id){SP=id;document.querySelectorAll('.paslon-card').forEach(c=>c.classList.remove('selected'));document.getElementById('pc-'+id).classList.add('selected');const db=await getDB();const pl=db.paslon.find(p=>p.id===id);const btn=document.getElementById('btn-vote');btn.textContent=`✓ Kirim Suara untuk Paslon ${id}: ${pl.ketua} & ${pl.wakil}`;btn.disabled=false;}
+
+async function openConfirm(){if(!SP)return;const db=await getDB();const pl=db.paslon.find(p=>p.id===SP);document.getElementById('modal-paslon-name').textContent=`Paslon ${pl.id}: ${pl.ketua} & ${pl.wakil}`;document.getElementById('modal-confirm').classList.add('open');}
+
+async function submitVote(){
+  closeModal('modal-confirm');
+  const db=await getDB();
+  if(db.votes[CU.nisn])return;
+  db.votes[CU.nisn]={paslonId:SP,time:new Date().toLocaleString('id-ID')};
+  await saveDB(db);
+  const pl=db.paslon.find(p=>p.id===SP);
+  renderVotedPage(pl,db.votes[CU.nisn].time);
+  showPage('page-voted');
+}
+
+function renderVotedPage(pl,time){document.getElementById('voted-nomor').textContent=pl.id;document.getElementById('voted-names').textContent=pl.ketua+' & '+pl.wakil;document.getElementById('voted-time').textContent='Waktu: '+time;document.getElementById('voted-photos').innerHTML=`<div style="text-align:center">${pEl(pl.ketua_photo,60)}<div style="font-size:10px;color:#64748b;margin-top:4px;font-weight:700;text-transform:uppercase">Ketua</div></div><div style="text-align:center">${pEl(pl.wakil_photo,60)}<div style="font-size:10px;color:#64748b;margin-top:4px;font-weight:700;text-transform:uppercase">Wakil</div></div>`;}
+
+async function switchTab(id,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');btn.classList.add('active');
+  if(id==='t-result') await renderAdminResult();
+  if(id==='t-paslon') await renderPaslonEdit();
+  if(id==='t-voters') await renderVotersTable();
+  if(id==='t-akun') await renderAkunTable();
+}
+
+async function renderAdmin(){ await renderAdminResult(); await renderPaslonEdit(); }
+
+async function renderAdminResult(){
+  const db=await getDB();
+  const tv=db.voters.length,ts=Object.keys(db.votes).length,pct=tv?Math.round(ts/tv*100):0;
+  document.getElementById('adm-stats').innerHTML=`<div class="stat-card"><div class="stat-val">${tv}</div><div class="stat-lbl">Total Pemilih</div></div><div class="stat-card"><div class="stat-val">${ts}</div><div class="stat-lbl">Sudah Memilih</div></div><div class="stat-card"><div class="stat-val">${pct}%</div><div class="stat-lbl">Partisipasi</div></div>`;
+  const cnt={};db.paslon.forEach(p=>cnt[p.id]=0);
+  Object.values(db.votes).forEach(v=>{if(cnt[v.paslonId]!==undefined)cnt[v.paslonId]++;});
+  document.getElementById('adm-bars').innerHTML=db.paslon.map(pl=>{const v=cnt[pl.id],p=ts?Math.round(v/ts*100):0;return`<div class="bar-wrap"><div class="bar-label"><span><strong>Paslon ${pl.id}:</strong> ${pl.ketua} &amp; ${pl.wakil}</span><span style="font-weight:700">${v} suara (${p}%)</span></div><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${pl.color}">${p>12?p+'%':''}</div></div></div>`;}).join('');
+}
+
+async function renderPaslonEdit(){
+  const db=await getDB();
+  document.getElementById('paslon-edit-area').innerHTML=db.paslon.map(pl=>`
+  <div class="paslon-edit-card">
+    <div class="paslon-edit-header"><div class="paslon-edit-num" style="background:${pl.color}">${pl.id}</div><span style="font-size:15px;font-weight:700;color:#1e293b">Pasangan Calon ${pl.id}</span></div>
+    <div class="two-col" style="margin-bottom:16px">
+      <div>
+        <div style="font-size:12px;font-weight:700;color:#64748b;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em">Calon Ketua</div>
+        <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:12px">
+          <div class="photo-upload-circle" onclick="document.getElementById('ph-${pl.id}-ketua').click()" title="Klik untuk upload foto">${pl.ketua_photo?`<img src="${pl.ketua_photo}"/>`:'<span>📷</span>'}</div>
+          <div style="font-size:11px;color:#64748b;margin-top:5px;text-align:center">Klik untuk upload foto</div>
+          <input type="file" id="ph-${pl.id}-ketua" accept="image/*" style="display:none" onchange="window.handlePhoto(this,${pl.id},'ketua')"/>
+        </div>
+        <div class="fg" style="margin-bottom:8px"><label>Nama Ketua</label><input id="ed-${pl.id}-kname" value="${pl.ketua}"/></div>
+        <div class="fg" style="margin:0"><label>Kelas</label><input id="ed-${pl.id}-kkelas" value="${pl.ketua_kelas}"/></div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:#64748b;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em">Calon Wakil Ketua</div>
+        <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:12px">
+          <div class="photo-upload-circle" onclick="document.getElementById('ph-${pl.id}-wakil').click()" title="Klik untuk upload foto">${pl.wakil_photo?`<img src="${pl.wakil_photo}"/>`:'<span>📷</span>'}</div>
+          <div style="font-size:11px;color:#64748b;margin-top:5px;text-align:center">Klik untuk upload foto</div>
+          <input type="file" id="ph-${pl.id}-wakil" accept="image/*" style="display:none" onchange="window.handlePhoto(this,${pl.id},'wakil')"/>
+        </div>
+        <div class="fg" style="margin-bottom:8px"><label>Nama Wakil</label><input id="ed-${pl.id}-wname" value="${pl.wakil}"/></div>
+        <div class="fg" style="margin:0"><label>Kelas</label><input id="ed-${pl.id}-wkelas" value="${pl.wakil_kelas}"/></div>
+      </div>
+    </div>
+    <div class="fg"><label>Visi</label><input id="ed-${pl.id}-visi" value="${pl.visi}"/></div>
+    <div class="fg" style="margin:0"><label>Misi (satu poin per baris)</label><textarea id="ed-${pl.id}-misi" rows="4">${pl.misi}</textarea></div>
+  </div>`).join('');
+}
+
+async function handlePhoto(input,pid,role){
+  const f=input.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=async function(e){
+    const data=e.target.result;
+    const wrap=input.previousElementSibling.previousElementSibling;
+    wrap.innerHTML=`<img src="${data}"/>`;
+    const db=await getDB();
+    const pl=db.paslon.find(p=>p.id==pid);
+    if(pl){pl[role+'_photo']=data; await saveDB(db);}
+  };
+  r.readAsDataURL(f);
+}
+
+async function savePaslon(){
+  const db=await getDB();
+  db.paslon.forEach(pl=>{
+    pl.ketua=document.getElementById('ed-'+pl.id+'-kname').value;
+    pl.ketua_kelas=document.getElementById('ed-'+pl.id+'-kkelas').value;
+    pl.wakil=document.getElementById('ed-'+pl.id+'-wname').value;
+    pl.wakil_kelas=document.getElementById('ed-'+pl.id+'-wkelas').value;
+    pl.visi=document.getElementById('ed-'+pl.id+'-visi').value;
+    pl.misi=document.getElementById('ed-'+pl.id+'-misi').value;
+  });
+  await saveDB(db);
+  const al=document.getElementById('paslon-save-alert');
+  al.textContent='✓ Data paslon berhasil disimpan!';al.className='alert alert-ok';al.style.display='block';
+  setTimeout(()=>al.style.display='none',3000);
+}
+
+async function renderVotersTable(){
+  const db=await getDB();
+  document.getElementById('voters-tbody').innerHTML=db.voters.map((v,i)=>{
+    const voted=db.votes[v.nisn];
+    return`<tr><td>${i+1}</td><td>${v.name}</td><td>${v.kelas}</td><td>${v.nisn}</td><td><span class="badge ${voted?'badge-y':'badge-n'}">${voted?'✓ Sudah memilih':'Belum'}</span></td></tr>`;
+  }).join('');
+}
+
+async function renderAkunTable(){
+  const db=await getDB();
+  document.getElementById('akun-tbody').innerHTML=db.voters.map((v,i)=>`<tr><td>${i+1}</td><td>${v.name}</td><td>${v.kelas}</td><td>${v.nisn}</td><td><button class="btn-sm btn-del" onclick="window.hapusAkun('${v.nisn}')">Hapus</button></td></tr>`).join('');
+}
+
+async function addAkun(){
+  const name=document.getElementById('an-name').value.trim(),kelas=document.getElementById('an-kelas').value.trim(),nisn=document.getElementById('an-nisn').value.trim(),pw=document.getElementById('an-pw').value.trim(),al=document.getElementById('akun-alert');
+  al.style.display='none';
+  if(!name||!kelas||!nisn||!pw){al.textContent='Semua kolom wajib diisi.';al.className='alert alert-err';al.style.display='block';return;}
+  const db=await getDB();
+  if(db.voters.find(v=>v.nisn===nisn)){al.textContent='NISN sudah terdaftar.';al.className='alert alert-err';al.style.display='block';return;}
+  db.voters.push({nisn,name,kelas,pass:pw});
+  await saveDB(db);
+  ['an-name','an-kelas','an-nisn','an-pw'].forEach(id=>document.getElementById(id).value='');
+  al.textContent='✓ Akun berhasil ditambahkan!';al.className='alert alert-ok';al.style.display='block';
+  await renderAkunTable();
+}
+
+async function hapusAkun(nisn){
+  if(!confirm('Hapus akun ini?'))return;
+  const db=await getDB();
+  db.voters=db.voters.filter(v=>v.nisn!==nisn);
+  delete db.votes[nisn];
+  await saveDB(db);
+  await renderAkunTable();
+}
+
+async function doReset(){
+  closeModal('modal-reset');
+  const db=await getDB();
+  db.votes={};
+  await saveDB(db);
+  await renderAdmin();
+}
+
+async function changeAdminPw(){
+  const p=document.getElementById('new-pw').value.trim(),al=document.getElementById('pw-alert');
+  if(!p||p.length<6){al.textContent='Password minimal 6 karakter.';al.className='alert alert-err';al.style.display='block';return;}
+  const db=await getDB();
+  db.adminPass=p;
+  await saveDB(db);
+  document.getElementById('new-pw').value='';
+  al.textContent='✓ Password berhasil diubah!';al.className='alert alert-ok';al.style.display='block';
+}
+
+// Mengekspos fungsi ke object window (karena script module mengisolasi fungsi)
+window.doLogin = doLogin;
+window.doAdminLogin = doAdminLogin;
+window.doLogout = doLogout;
+window.showPage = showPage;
+window.closeModal = closeModal;
+window.selectPaslon = selectPaslon;
+window.openConfirm = openConfirm;
+window.submitVote = submitVote;
+window.switchTab = switchTab;
+window.handlePhoto = handlePhoto;
+window.savePaslon = savePaslon;
+window.addAkun = addAkun;
+window.hapusAkun = hapusAkun;
+window.doReset = doReset;
+window.changeAdminPw = changeAdminPw;
+
+document.getElementById('l-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('l-user').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('a-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doAdminLogin();});
+</script>
+</body>
+</html>
